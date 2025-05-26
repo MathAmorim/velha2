@@ -1,0 +1,224 @@
+:root {
+    --color-x: #f44336;
+    --color-o: #2196F3;
+    --color-draw: #9E9E9E;
+    --color-bg: #f5f5f5;
+    --color-board-bg: #333;
+    --color-cell-bg: #ddd;
+    --color-cell-hover: #ccc;
+    --color-text: #333;
+    --color-container-bg: white;
+    --border-radius: 8px;
+    --gap-small: 2px;
+    --gap-medium: 5px;
+    --gap-large: 10px;
+    --max-super-board-size: 500px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--color-container-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+}
+
+.game-info {
+    margin-bottom: 1.5rem;
+}
+
+.status {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.player-x { color: var(--color-x); }
+.player-o { color: var(--color-o); }
+
+.super-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: var(--gap-large);
+    margin: 1.5rem auto;
+    width: 100%;
+    max-width: var(--max-super-board-size);
+    max-height: var(--max-super-board-size);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: var(--gap-small);
+    background-color: var(--color-board-bg);
+    padding: var(--gap-medium);
+    border-radius: var(--border-radius);
+    position: relative;
+    aspect-ratio: 1/1;
+}
+
+.board::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: calc(var(--border-radius) - 1px);
+    pointer-events: none;
+}
+
+.board.won-x::after {
+    outline: 3px solid var(--color-x);
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.board.won-o::after {
+    outline: 3px solid var(--color-o);
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.board.draw::after {
+    outline: 3px solid var(--color-draw);
+    background-color: rgba(158, 158, 158, 0.1);
+}
+
+.board.active-x {
+    outline: 3px solid var(--color-x);
+    animation: pulse-x 1.5s infinite;
+}
+
+.board.active-o {
+    outline: 3px solid var(--color-o);
+    animation: pulse-o 1.5s infinite;
+}
+
+.board.global-win {
+    animation: global-win 1.5s infinite;
+    z-index: 10;
+}
+
+@keyframes pulse-x {
+    0% { outline-width: 3px; opacity: 0.7; }
+    50% { outline-width: 6px; opacity: 0.4; }
+    100% { outline-width: 3px; opacity: 0.7; }
+}
+
+@keyframes pulse-o {
+    0% { outline-width: 3px; opacity: 0.7; }
+    50% { outline-width: 6px; opacity: 0.4; }
+    100% { outline-width: 3px; opacity: 0.7; }
+}
+
+@keyframes global-win {
+    0% { transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 255, 0, 0.7); }
+    50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 255, 0, 0.9); }
+    100% { transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 255, 0, 0.7); }
+}
+
+.cell {
+    background-color: var(--color-cell-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    aspect-ratio: 1/1;
+    border: none;
+}
+
+.cell:hover {
+    background-color: var(--color-cell-hover);
+}
+
+.cell.x { color: var(--color-x); }
+.cell.o { color: var(--color-o); }
+
+.controls {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#ai-toggle-btn, #reset-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#reset-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#reset-btn:hover {
+    background-color: #45a049;
+}
+
+#ai-toggle-btn {
+    background-color: #ff9800;
+    color: white;
+}
+
+#ai-toggle-btn:hover {
+    background-color: #e68a00;
+}
+
+#ai-toggle-btn.active {
+    background-color: #f44336;
+}
+
+.result {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-height: 1.8rem;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .cell {
+        font-size: 1.2rem;
+    }
+    
+    .super-board {
+        gap: 5px;
+    }
+}

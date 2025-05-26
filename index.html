@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Jogo da Velha 9x9</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Super Jogo da Velha 9x9</h1>
+        <div class="game-info">
+            <div class="status">Vez do jogador: <span id="current-player" class="player-x">X</span></div>
+            <div class="status">Tabuleiro ativo: <span id="active-board">Qualquer um</span></div>
+        </div>
+        
+        <div class="super-board" id="super-board">
+            <!-- Os 9 tabuleiros serão gerados via JavaScript -->
+        </div>
+        
+        <div class="controls">
+            <button id="ai-toggle-btn">Ativar IA (O)</button>
+            <button id="reset-btn">Reiniciar Jogo</button>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
