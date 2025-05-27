@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetButton = document.getElementById('reset-btn');
     const aiToggleButton = document.getElementById('ai-toggle-btn');
     const aiDifficultyButton = document.getElementById('ai-difficulty-btn');
-    
+    const rulesButton = document.getElementById('rules-btn');
+    const rulesModal = document.getElementById('rules-modal');
+    const closeButton = document.querySelector('.close');
+
     // Estado do jogo
     let { currentPlayer, activeBoard, gameActive, aiEnabled, aiDifficulty, aiPlayer } = gameConfig;
     const boardsState = Array(9).fill().map(() => Array(9).fill(''));
@@ -332,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aiEnabled && currentPlayer === aiPlayer) {
             setTimeout(makeAiMove, 500);
         }
+        rulesModal.style.display = 'none';
     }
     
     // Event listeners
@@ -340,4 +344,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Inicia o jogo
     initGame();
+
+    // Adicione os event listeners para o modal
+    rulesButton.addEventListener('click', () => {
+        rulesModal.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', () => {
+        rulesModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === rulesModal) {
+            rulesModal.style.display = 'none';
+        }
+    });
 });

@@ -3,20 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Jogo da Velha 9x9</title>
+    <title>Jogo da Velha³</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Super Jogo da Velha 9x9</h1>
+        <h1>(Jogo da Velha)³</h1>
+        
+        <!-- Botão de Regras -->
+        <button id="rules-btn" class="rules-btn">Regras do Jogo</button>
+        
+        <!-- Modal de Regras -->
+        <div id="rules-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Como Jogar</h2>
+                <div class="rules-text">
+                    <h3>O Jogo:</h3>
+                    <p>O (Jogo da Velha)³ consiste em 9 tabuleiros menores organizados em um grande tabuleiro 3x3.</p>
+                    
+                    <h3>Regras Básicas:</h3>
+                    <ol>
+                        <li>O primeiro jogador é X e o segundo é O</li>
+                        <li>Você começa jogando em qualquer tabuleiro</li>
+                        <li>Sua jogada determina o próximo tabuleiro ativo</li>
+                        <li>Se enviado para um tabuleiro já vencido, pode jogar em qualquer outro</li>
+                    </ol>
+                    
+                    <h3>Condições de Vitória:</h3>
+                    <ul>
+                        <li>Cada tabuleiro menor segue as regras tradicionais do jogo da velha</li>
+                        <li>Vença 3 tabuleiros em linha (horizontal, vertical ou diagonal) para vencer</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div class="game-info">
             <div class="status">Vez do jogador: <span id="current-player" class="player-x">X</span></div>
             <div class="status">Tabuleiro ativo: <span id="active-board">Qualquer um</span></div>
         </div>
         
-        <div class="super-board" id="super-board">
-            <!-- Os 9 tabuleiros serão gerados via JavaScript -->
-        </div>
+        <div class="super-board" id="super-board"></div>
         
         <div class="controls">
             <button id="ai-toggle-btn">Ativar IA (O)</button>

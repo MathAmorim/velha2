@@ -245,3 +245,76 @@ h1 {
 #ai-difficulty-btn:hover {
     opacity: 0.9;
 }
+
+/* Estilos para o modal de regras */
+.rules-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: #673AB7;
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.rules-btn:hover {
+    background-color: #5E35B1;
+    transform: translateY(-2px);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    background-color: var(--color-container-bg);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--color-text);
+}
+
+.rules-text {
+    text-align: left;
+    line-height: 1.6;
+}
+
+.rules-text h3 {
+    margin-top: 1.5rem;
+    color: var(--color-x);
+}
+
+.rules-text ol, .rules-text ul {
+    margin: 1rem 0 1rem 1.5rem;
+}
+
+.rules-text li {
+    margin-bottom: 0.5rem;
+}
