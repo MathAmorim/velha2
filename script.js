@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Configurações do jogo
     const gameConfig = {
         maxSuperBoardSize: 500,
         currentPlayer: 'X',
         activeBoard: null,
         gameActive: true,
         aiEnabled: false,
+        aiDifficulty: 'normal', // 'easy' ou 'normal'
         aiPlayer: 'O',
         winningBoards: []
     };
@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultDisplay = document.getElementById('result');
     const resetButton = document.getElementById('reset-btn');
     const aiToggleButton = document.getElementById('ai-toggle-btn');
+    const aiDifficultyButton = document.getElementById('ai-difficulty-btn');
     
     // Estado do jogo
-    let { currentPlayer, activeBoard, gameActive, aiEnabled, aiPlayer } = gameConfig;
+    let { currentPlayer, activeBoard, gameActive, aiEnabled, aiDifficulty, aiPlayer } = gameConfig;
     const boardsState = Array(9).fill().map(() => Array(9).fill(''));
     const boardsResults = Array(9).fill(null);
     
@@ -42,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateActiveBoardDisplay();
         updateAiButton();
         
-        // Se a IA está habilitada e é a vez dela, faz a jogada
         if (aiEnabled && currentPlayer === aiPlayer && gameActive) {
             setTimeout(makeAiMove, 500);
         }
@@ -125,7 +125,69 @@ document.addEventListener('DOMContentLoaded', () => {
     function makeAiMove() {
         if (!gameActive || currentPlayer !== aiPlayer) return;
         
-        // Encontra todos os movimentos válidos
+        if (aiDifficulty === 'easy') {
+            makeRandomMove();
+        } else {
+            makeSmartMove();
+        }
+    }
+
+    function makeRandomMove() {
+        const validMoves = getValidMoves();
+        if (validMoves.length > 0) {
+            const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+            makeMove(randomMove.boardIndex, randomMove.cellIndex);
+        }
+    }
+
+    function makeSmartMove() {
+        const validMoves = getValidMoves();
+        if (validMoves.length === 0) return;
+
+        // 1. Verifica se pode vencer em algum tabuleiro
+        for (const move of validMoves) {
+            const { boardIndex, cellIndex } = move;
+            const originalValue = boardsState[boardIndex][cellIndex];
+            boardsState[boardIndex][cellIndex] = aiPlayer;
+            
+            if (checkImmediateWin(boardIndex)) {
+                boardsState[boardIndex][cellIndex] = originalValue;
+                return makeMove(boardIndex, cellIndex);
+            }
+            boardsState[boardIndex][cellIndex] = originalValue;
+        }
+
+        // 2. Bloqueia vitória do jogador
+        for (const move of validMoves) {
+            const { boardIndex, cellIndex } = move;
+            const originalValue = boardsState[boardIndex][cellIndex];
+            boardsState[boardIndex][cellIndex] = 'X';
+            
+            if (checkImmediateWin(boardIndex)) {
+                boardsState[boardIndex][cellIndex] = originalValue;
+                return makeMove(boardIndex, cellIndex);
+            }
+            boardsState[boardIndex][cellIndex] = originalValue;
+        }
+
+        // 3. Prioriza o centro e cantos
+        const centerAndCorners = [0, 2, 4, 6, 8]; // Índices das células centrais e de canto
+        const goodMoves = validMoves.filter(move => 
+            centerAndCorners.includes(move.cellIndex)
+        );
+        
+        if (goodMoves.length > 0) {
+            return makeMove(
+                goodMoves[0].boardIndex, 
+                goodMoves[0].cellIndex
+            );
+        }
+
+        // 4. Se nenhuma estratégia aplicável, faz movimento aleatório
+        makeRandomMove();
+    }
+
+    function getValidMoves() {
         const validMoves = [];
         for (let boardIndex = 0; boardIndex < 9; boardIndex++) {
             if (activeBoard !== null && activeBoard !== boardIndex) continue;
@@ -137,14 +199,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        
-        // Se há movimentos válidos, escolhe um aleatório
-        if (validMoves.length > 0) {
-            const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
-            makeMove(randomMove.boardIndex, randomMove.cellIndex);
-        }
+        return validMoves;
     }
-    
+
+    function checkImmediateWin(boardIndex) {
+        const board = boardsState[boardIndex];
+        for (const condition of winningConditions) {
+            const [a, b, c] = condition;
+            if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function toggleAIDifficulty() {
+        aiDifficulty = aiDifficulty === 'easy' ? 'normal' : 'easy';
+        updateAiDifficultyButton();
+    }
+
+    function updateAiDifficultyButton() {
+        aiDifficultyButton.textContent = `Dificuldade: ${aiDifficulty === 'easy' ? 'Fácil' : 'Normal'}`;
+        aiDifficultyButton.className = aiDifficulty === 'easy' ? 'easy' : 'normal';
+    }
+
     // Verifica se a jogada é válida
     function isMoveValid(boardIndex, cellIndex) {
         return (
